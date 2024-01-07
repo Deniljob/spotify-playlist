@@ -1,0 +1,64 @@
+.search-wrapper {
+  display: flex;
+  margin: 50px;
+  justify-content: center;
+}
+
+.search-wrapper input {
+  padding: 10px;
+  border: none;
+  width: 50%;
+  outline: none;
+  font-size: 15px;
+}
+
+.search-wrapper button {
+  cursor: pointer;
+  padding: 20px;
+  border: none;
+  background-color: #1ed760;
+}
+.song-card {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.audio-player {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+.rhap_container {
+  background-color: black !important;
+  color: white;
+}
+
+.rhap_main,
+.rhap_stacked {
+  color: white !important;
+}
+
+.download-all-button {
+  text-align: center;
+  font-size: 17px;
+  padding: 10px;
+  color: white;
+  background-color: transparent;
+  cursor: pointer;
+  border: 2px solid;
+  border-radius: 50px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.download-all-button:hover {
+  background-color: #1ed760;
+  color: black;
+}
+
+.download-all-button-container {
+  display: flex;
+  justify-content: center;
+}
