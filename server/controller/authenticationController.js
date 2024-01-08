@@ -35,7 +35,7 @@ exports.callback = (req, res) => {
       spotifyApi.setAccessToken(accessToken);
       spotifyApi.setRefreshToken(refreshToken);
 
-      return res.redirect(`http://localhost:5173/login?code=${accessToken}`);
+      return res.redirect(`http://localhost:5173/?code=${accessToken}`);
 
       return res.json({
         status: true,

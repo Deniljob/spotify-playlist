@@ -10,9 +10,7 @@ function Login() {
     <>
       <section className="login-wrapper">
         <h1>Login to Spotify</h1>
-        <a href={URL}>
-          <button>Login</button>
-        </a>
+        <a href={URL}>Login</a>
       </section>
     </>
   );

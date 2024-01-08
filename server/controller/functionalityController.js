@@ -12,6 +12,7 @@ const spotifyApi = new SpotifyApi({
 exports.playList = async (req, res) => {
   try {
     const authHeader = req.headers["authorization"];
+
     const token = authHeader && authHeader.split(" ")[1];
 
     const { link } = req.body;

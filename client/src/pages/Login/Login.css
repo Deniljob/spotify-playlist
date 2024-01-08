@@ -11,7 +11,7 @@
   transition: 0.3s;
 }
 
-.login-wrapper button {
+.login-wrapper a {
   text-align: center;
   font-size: 20px;
   padding: 10px;
@@ -23,10 +23,11 @@
   border-radius: 50px;
   margin: auto;
   font-weight: 700;
+  text-decoration: none;
   transition: 0.3s;
 }
 
-.login-wrapper button:hover {
+.login-wrapper a:hover {
   background-color: #1ed760;
   color: black;
 }
