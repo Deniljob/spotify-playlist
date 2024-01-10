@@ -15,20 +15,10 @@ function Dashboard() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const urlSearchParams = new URLSearchParams(window.location.search);
-    const code = urlSearchParams.get("code");
-
-    if (code) {
-      sessionStorage.setItem("accessToken", code);
-
-      urlSearchParams.delete("code");
-
-      const newUrl = `${
-        window.location.pathname
-      }?${urlSearchParams.toString()}`;
-
-      window.history.replaceState({}, "", newUrl);
-    }
+    const accessTokenCookie = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("access_token="));
+    if (!accessTokenCookie) window.location.href = "/login";
   }, []);
 
   async function getLinks() {
@@ -42,7 +32,7 @@ function Dashboard() {
         },
         {
           headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${document.cookie.split("=")[1]}`,
           },
         }
       );
@@ -80,6 +70,7 @@ function Dashboard() {
         className="song-card"
         style={{ display: songs.length === 0 ? "none" : "flex" }}
       >
+        <SongCard>Heathens</SongCard>
         <SongCard>Heathens</SongCard>
       </div>
       <div

@@ -35,12 +35,17 @@ exports.callback = (req, res) => {
       spotifyApi.setAccessToken(accessToken);
       spotifyApi.setRefreshToken(refreshToken);
 
-      return res.redirect(`http://localhost:5173/?code=${accessToken}`);
+      const expiresInMs = expiresIn * 1000;
 
-      return res.json({
-        status: true,
-        data: { accessToken, refreshToken, expiresIn },
-      });
+      const cookieOptions = {
+        httpOnly: false,
+        expires: new Date(Date.now() + expiresInMs),
+        path: "/", // Set the cookie for the root path
+      };
+
+      res.cookie("access_token", accessToken, cookieOptions);
+
+      return res.redirect(`http://localhost:5173/`);
     })
     .catch((err) => {
       return res.json({ status: false, message: err });
