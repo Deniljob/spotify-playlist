@@ -18,10 +18,25 @@ function Dashboard() {
       .split("; ")
       .find((row) => row.startsWith("access_token="));
     if (!accessTokenCookie) window.location.href = "/login";
+
+    const storedAudioLinks = localStorage.getItem("audioLinks");
+    if (storedAudioLinks) {
+      const audioLinks = JSON.parse(storedAudioLinks);
+
+      audioLinks.map((song) => {
+        if (song.data.status === true) {
+          setSongs((prev) => [...prev, song.data.data]);
+        }
+      });
+    }
+
+    return () => setSongs([]);
   }, []);
 
   async function getLinks() {
     try {
+      if (playListUrl == null || playListUrl == "") return;
+
       setLoading(true);
 
       const links = await axios.post(
@@ -51,6 +66,8 @@ function Dashboard() {
           setSongs((prev) => [...prev, song.data.data]);
         }
       });
+
+      localStorage.setItem("audioLinks", JSON.stringify(audioLinks));
     } catch (err) {
       console.log(err);
     } finally {
@@ -82,7 +99,7 @@ function Dashboard() {
             key={key}
             thumbnail={song.thumbnail}
             handleClick={() =>
-              setCurrentSong((prev) => (prev === key ? null : key))
+              setCurrentSong((prev) => (prev === key ? prev : key))
             }
             active={currentSong === key ? "active" : ""}
           >
