@@ -94,8 +94,41 @@ exports.downloadAudios = async (req, res) => {
 
     const result = audio.filter((audioLink) => audioLink != null);
 
-    return res.json({ staus: true, data: result });
+    return res.json({ status: true, data: result });
   } catch (error) {
     throw new Error(`Error in downloadAudios: ${error.message}`);
+  }
+};
+
+exports.downloadSingleAudio = async (req, res) => {
+  try {
+    const { youtubeLink } = req.body;
+
+    if (youtubeLink == null)
+      return res.status(400).json({ status: false, message: "Bad request" });
+
+    const videoDetails = await youtubeDl(`${youtubeLink}`, {
+      dumpSingleJson: true,
+      noCheckCertificates: true,
+      noWarnings: true,
+      preferFreeFormats: true,
+      addHeader: ["referer:youtube.com", "user-agent:googlebot"],
+    });
+
+    const songName = videoDetails.title;
+    const formats = videoDetails.formats;
+
+    const format = formats.filter(
+      (data) =>
+        data.resolution === "audio only" && data.manifest_url == undefined
+    );
+
+    const audioLink = format[format.length - 1].url;
+
+    return res.json({ status: true, data: audioLink });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ status: false, message: "Server error", error: error });
   }
 };

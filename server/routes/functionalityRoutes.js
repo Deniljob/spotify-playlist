@@ -8,4 +8,9 @@ router.post("/playList", functionalityController.playList);
 
 router.post("/download", functionalityController.downloadAudios);
 
+router.post(
+  "/download-single-audio",
+  functionalityController.downloadSingleAudio
+);
+
 module.exports = router;
