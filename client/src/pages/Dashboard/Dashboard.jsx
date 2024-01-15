@@ -11,6 +11,7 @@ function Dashboard() {
   const [playListUrl, setPlayListUrl] = useState("");
   const [youTubeLinks, setYouTubeLinks] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [currentSong, setCurrentSong] = useState(0);
 
   useEffect(() => {
     const accessTokenCookie = document.cookie
@@ -72,25 +73,29 @@ function Dashboard() {
         </button>
       </div>
 
-      {/* <div className="download-all-button-container">
-        <button className="download-all-button">Download all</button>
-      </div> */}
-
       <div
         className="song-card"
         style={{ display: songs.length === 0 ? "none" : "flex" }}
       >
         {songs.map((song, key) => (
-          <SongCard key={key}>{song.songName}</SongCard>
+          <SongCard
+            key={key}
+            thumbnail={song.thumbnail}
+            handleClick={() => setCurrentSong(key)}
+          >
+            {song.songName}
+          </SongCard>
         ))}
       </div>
       <div
         className="audio-player"
         style={{ display: songs.length === 0 ? "none" : "block" }}
       >
+        <p>{songs.length > 0 ? songs[currentSong].songName : ""}</p>
         <AudioPlayer
           autoPlay
-          src={songs.length > 0 ? songs[0].audioLink : ""}
+          onEnded={() => setCurrentSong((prev) => prev + 1)}
+          src={songs.length > 0 ? songs[currentSong].audioLink : ""}
         />
       </div>
     </>

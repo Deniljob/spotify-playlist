@@ -125,12 +125,18 @@ exports.downloadSingleAudio = async (req, res) => {
 
     const audioLink = format[format.length - 1].url;
 
+    const thumbnails = videoDetails.thumbnails;
+
     const data = {
       songName,
       audioLink,
+      thumbnail: thumbnails[thumbnails.length - 1].url,
     };
 
-    return res.json({ status: true, data });
+    return res.json({
+      status: true,
+      data: data,
+    });
   } catch (error) {
     return res
       .status(500)

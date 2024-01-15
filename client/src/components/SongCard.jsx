@@ -17,23 +17,16 @@ function SongCard(props) {
     <>
       <div className={`card ${active}`} onClick={handleActivate}>
         <div className="icon">
-          <img
-            src="https://images.unsplash.com/photo-1481349518771-20055b2a7b24?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cmFuZG9tfGVufDB8fDB8fHww"
-            alt=""
-          />
+          <img src={props.thumbnail} alt="" />
         </div>
         <p className="title">{props.children}</p>
         <div className="text ">
-          {/* Download button and audio player */}
           <div className="song-container">
-            {/* <audio controls className="audio-button">
-              <source src="horse.ogg" type="audio/ogg" />
-            </audio> */}
             <div className="song-controls">
               <div className="download-button">
                 <ArrowDownCircleIcon />
               </div>
-              <div className="play-button">
+              <div className="play-button" onClick={props.handleClick}>
                 <PlayIcon />
               </div>
             </div>

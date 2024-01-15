@@ -29,7 +29,12 @@
   bottom: 0;
   left: 0;
   width: 100%;
+  background-color: black;
+  text-align: center;
+  padding-top: 20px;
+  font-size: 20px;
 }
+
 .rhap_container {
   background-color: black !important;
   color: white;
@@ -61,4 +66,12 @@
 .download-all-button-container {
   display: flex;
   justify-content: center;
+}
+
+.rhap_time {
+  color: #ffffff !important;
+}
+
+.rhap_container svg {
+  color: #ffffff;
 }
