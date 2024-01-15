@@ -19,29 +19,6 @@ function Dashboard() {
     if (!accessTokenCookie) window.location.href = "/login";
   }, []);
 
-  useEffect(() => {
-    if (youTubeLinks.length === 0) return;
-
-    youTubeLinks.map((link) => fetchAudio(link));
-
-    async function fetchAudio(link) {
-      try {
-        const audio = await axios.post(
-          "http://localhost:3000/api/download-single-audio",
-          {
-            youtubeLink: link,
-          }
-        );
-
-        setSongs((prev) => [...prev, audio.data.data]);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    return () => setSongs([]);
-  }, [youTubeLinks]);
-
   async function getLinks() {
     try {
       setLoading(true);
@@ -62,9 +39,17 @@ function Dashboard() {
 
       const dataLinks = links.data.data;
 
-      setYouTubeLinks((prev) => [...prev, dataLinks]);
+      const linkPromise = dataLinks.map(async (link) => {
+        if (link != null) return await fetchAudio(link);
+      });
 
-      console.log(dataLinks);
+      const audioLinks = await Promise.all(linkPromise);
+
+      audioLinks.map((song) => {
+        if (song.data.status === true) {
+          setSongs((prev) => [...prev, song.data.data]);
+        }
+      });
     } catch (err) {
       console.log(err);
     } finally {
@@ -87,26 +72,44 @@ function Dashboard() {
         </button>
       </div>
 
-      <div className="download-all-button-container">
+      {/* <div className="download-all-button-container">
         <button className="download-all-button">Download all</button>
-      </div>
+      </div> */}
 
       <div
         className="song-card"
         style={{ display: songs.length === 0 ? "none" : "flex" }}
       >
         {songs.map((song, key) => (
-          <SongCard key={key}>{key}</SongCard>
+          <SongCard key={key}>{song.songName}</SongCard>
         ))}
       </div>
       <div
         className="audio-player"
         style={{ display: songs.length === 0 ? "none" : "block" }}
       >
-        <AudioPlayer autoPlay src="http://example.com/audio.mp3" />
+        <AudioPlayer
+          autoPlay
+          src={songs.length > 0 ? songs[0].audioLink : ""}
+        />
       </div>
     </>
   );
+}
+
+async function fetchAudio(link) {
+  try {
+    const audio = await axios.post(
+      "http://localhost:3000/api/download-single-audio",
+      {
+        youtubeLink: link,
+      }
+    );
+
+    return audio;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export default Dashboard;

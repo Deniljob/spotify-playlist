@@ -125,7 +125,12 @@ exports.downloadSingleAudio = async (req, res) => {
 
     const audioLink = format[format.length - 1].url;
 
-    return res.json({ status: true, data: audioLink });
+    const data = {
+      songName,
+      audioLink,
+    };
+
+    return res.json({ status: true, data });
   } catch (error) {
     return res
       .status(500)
