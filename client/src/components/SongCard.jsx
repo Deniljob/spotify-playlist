@@ -15,7 +15,7 @@ function SongCard(props) {
 
   return (
     <>
-      <div className={`card ${active}`} onClick={handleActivate}>
+      <div className={`card ${props.active}`} onClick={handleActivate}>
         <div className="icon">
           <img src={props.thumbnail} alt="" />
         </div>

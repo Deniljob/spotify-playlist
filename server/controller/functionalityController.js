@@ -28,7 +28,7 @@ exports.playList = async (req, res) => {
     const items = data.body.tracks.items;
 
     const songNamePromises = items.map(async (value) => {
-      const trackName = value.track.name;
+      const trackName = `${value.track.name} music audio only`;
 
       const videoId = await youtubeSearch(trackName);
 

@@ -81,7 +81,10 @@ function Dashboard() {
           <SongCard
             key={key}
             thumbnail={song.thumbnail}
-            handleClick={() => setCurrentSong(key)}
+            handleClick={() =>
+              setCurrentSong((prev) => (prev === key ? null : key))
+            }
+            active={currentSong === key ? "active" : ""}
           >
             {song.songName}
           </SongCard>
