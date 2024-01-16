@@ -75,3 +75,7 @@
 .rhap_container svg {
   color: #ffffff;
 }
+
+.rhap_additional-controls button {
+  display: none !important;
+}
