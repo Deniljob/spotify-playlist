@@ -23,9 +23,11 @@ function SongCard(props) {
         <div className="text ">
           <div className="song-container">
             <div className="song-controls">
-              <div className="download-button">
-                <ArrowDownCircleIcon />
-              </div>
+              {/* <div className="download-button">
+                <a href={props.audioLink} target="_blank">
+                  <ArrowDownCircleIcon />
+                </a>
+              </div> */}
               <div className="play-button" onClick={props.handleClick}>
                 <PlayIcon />
               </div>

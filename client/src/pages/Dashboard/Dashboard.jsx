@@ -63,11 +63,18 @@ function Dashboard() {
 
       audioLinks.map((song) => {
         if (song.data.status === true) {
-          setSongs((prev) => [...prev, song.data.data]);
+          setSongs((prev) => [song.data.data, ...prev]);
         }
       });
 
-      localStorage.setItem("audioLinks", JSON.stringify(audioLinks));
+      const storedAudioLinks = localStorage.getItem("audioLinks");
+      if (storedAudioLinks) {
+        const storedLinks = JSON.parse(storedAudioLinks);
+        const newSongs = [...audioLinks, ...storedLinks];
+        localStorage.setItem("audioLinks", JSON.stringify(newSongs));
+      } else {
+        localStorage.setItem("audioLinks", JSON.stringify(audioLinks));
+      }
     } catch (err) {
       console.log(err);
     } finally {
@@ -98,6 +105,7 @@ function Dashboard() {
           <SongCard
             key={key}
             thumbnail={song.thumbnail}
+            audioLink={song.audioLink}
             handleClick={() =>
               setCurrentSong((prev) => (prev === key ? prev : key))
             }
