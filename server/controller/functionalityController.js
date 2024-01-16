@@ -3,6 +3,29 @@ const youtubeSearchApi = require("youtube-search-api");
 const youtubeDl = require("youtube-dl-exec");
 const fs = require("fs");
 
+const ARTIST_INFO = [
+  {
+    external_urls: {
+      spotify: "https://open.spotify.com/artist/3YNdAmDzM5zMbGYeaSCe6A",
+    },
+    href: "https://api.spotify.com/v1/artists/3YNdAmDzM5zMbGYeaSCe6A",
+    id: "3YNdAmDzM5zMbGYeaSCe6A",
+    name: "phonk.me",
+    type: "artist",
+    uri: "spotify:artist:3YNdAmDzM5zMbGYeaSCe6A",
+  },
+  {
+    external_urls: {
+      spotify: "https://open.spotify.com/artist/3nLZDVpDU6RrQ9k98yHTKh",
+    },
+    href: "https://api.spotify.com/v1/artists/3nLZDVpDU6RrQ9k98yHTKh",
+    id: "3nLZDVpDU6RrQ9k98yHTKh",
+    name: "KIIXSHI",
+    type: "artist",
+    uri: "spotify:artist:3nLZDVpDU6RrQ9k98yHTKh",
+  },
+];
+
 const spotifyApi = new SpotifyApi({
   clientId: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
@@ -28,7 +51,8 @@ exports.playList = async (req, res) => {
     const items = data.body.tracks.items;
 
     const songNamePromises = items.map(async (value) => {
-      const trackName = `${value.track.name} music audio only`;
+      const artistNames = getArtists(value.track.album.artists);
+      const trackName = `${value.track.name} by ${artistNames}`;
 
       const videoId = await youtubeSearch(trackName);
 
@@ -56,6 +80,18 @@ async function youtubeSearch(trackName) {
   } catch (error) {
     return false;
   }
+}
+
+function getArtists(infos) {
+  let artistNames = "";
+
+  infos.map((info) => {
+    if (info != undefined) {
+      artistNames += " " + info.name;
+    }
+  });
+
+  return artistNames;
 }
 
 exports.downloadAudios = async (req, res) => {
