@@ -5,8 +5,11 @@ import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { PlayCircleIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
+import useAuth from "../../hooks/useAuth";
 
 function Dashboard() {
+  const accessToken = useAuth();
+
   const [songs, setSongs] = useState([]);
   const [playListUrl, setPlayListUrl] = useState("");
   const [youTubeLinks, setYouTubeLinks] = useState([]);
@@ -14,11 +17,6 @@ function Dashboard() {
   const [currentSong, setCurrentSong] = useState(0);
 
   useEffect(() => {
-    const accessTokenCookie = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("access_token="));
-    if (!accessTokenCookie) window.location.href = "/login";
-
     const storedAudioLinks = localStorage.getItem("audioLinks");
     if (storedAudioLinks) {
       const audioLinks = JSON.parse(storedAudioLinks);
@@ -29,8 +27,9 @@ function Dashboard() {
         }
       });
     }
-
-    return () => setSongs([]);
+    return () => {
+      setSongs([]);
+    };
   }, []);
 
   async function getLinks() {
@@ -121,7 +120,6 @@ function Dashboard() {
       >
         <p>{songs.length > 0 ? songs[currentSong].songName : ""}</p>
         <AudioPlayer
-          autoPlay
           onEnded={() => setCurrentSong((prev) => prev + 1)}
           src={songs.length > 0 ? songs[currentSong].audioLink : ""}
         />

@@ -18,12 +18,10 @@ exports.login = (req, res) => {
 };
 
 exports.callback = (req, res) => {
-  const err = req.query.error;
-  const code = req.query.code;
-  const state = req.query.state;
+  const code = req.body.code;
 
-  if (err)
-    return res.status(500).json({ status: false, message: "server error" });
+  if (!code)
+    return res.status(400).json({ status: false, message: "server error" });
 
   spotifyApi
     .authorizationCodeGrant(code)
@@ -32,22 +30,12 @@ exports.callback = (req, res) => {
       const refreshToken = data.body["refresh_token"];
       const expiresIn = data.body["expires_in"];
 
-      spotifyApi.setAccessToken(accessToken);
-      spotifyApi.setRefreshToken(refreshToken);
-
-      const expiresInMs = expiresIn * 1000;
-
-      const cookieOptions = {
-        httpOnly: false,
-        expires: new Date(Date.now() + expiresInMs),
-        path: "/", // Set the cookie for the root path
-      };
-
-      res.cookie("access_token", accessToken, cookieOptions);
-
-      return res.redirect(`http://localhost:5173/`);
+      return res.json({ status: true, data: { accessToken, expiresIn } });
     })
     .catch((err) => {
-      return res.json({ status: false, message: err });
+      return res.status(500).json({
+        status: false,
+        message: "Failed to authenticate. Please try again later.",
+      });
     });
 };

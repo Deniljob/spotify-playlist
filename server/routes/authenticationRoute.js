@@ -6,6 +6,6 @@ const { login, callback } = require("../controller/authenticationController");
 
 router.get("/login", login);
 
-router.get("/callback", callback);
+router.post("/callback", callback);
 
 module.exports = router;
