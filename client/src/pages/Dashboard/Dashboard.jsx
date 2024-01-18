@@ -45,7 +45,7 @@ function Dashboard() {
         },
         {
           headers: {
-            Authorization: `Bearer ${document.cookie.split("=")[1]}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         }
       );

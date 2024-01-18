@@ -15,16 +15,36 @@ export default function () {
         code,
       })
       .then((res) => {
-        setAccessToken(res.data.data.accessToken);
-        setRefreshToken(res.data.data.refreshToken);
-        setExpiresIn(res.data.data.expiresIn);
-
         window.history.pushState({}, null, "/");
+        setAccessToken(res.data.data.accessToken);
+
+        setRefreshToken(res.data.data.refreshToken);
+
+        setExpiresIn(res.data.data.expiresIn);
       })
       .catch(() => {
         window.location = "/login";
       });
   }, [code]);
+
+  useEffect(() => {
+    if (!refreshToken || !expiresIn) return;
+
+    const timeOut = setTimeout(() => {
+      axios
+        .post("http://localhost:3000/refresh", {
+          refreshToken,
+        })
+        .then((res) => {
+          setAccessToken(res.data.data.accessToken);
+
+          setExpiresIn(res.data.data.expiresIn);
+        })
+        .catch(() => (window.location = "/"));
+    }, (expiresIn - 60) * 1000);
+
+    return () => clearTimeout(timeOut);
+  }, [refreshToken, expiresIn]);
 
   return accessToken;
 }
