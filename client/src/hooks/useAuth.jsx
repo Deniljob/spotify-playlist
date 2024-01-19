@@ -5,22 +5,31 @@ export default function () {
   const [code, setCode] = useState(
     new URLSearchParams(window.location.search).get("code")
   );
-  const [accessToken, setAccessToken] = useState();
-  const [refreshToken, setRefreshToken] = useState();
-  const [expiresIn, setExpiresIn] = useState();
+  const [accessToken, setAccessToken] = useState(
+    localStorage.getItem("accessToken")
+  );
+  const [refreshToken, setRefreshToken] = useState(
+    localStorage.getItem("refreshToken")
+  );
+  const [expiresIn, setExpiresIn] = useState(
+    localStorage.getItem("accessTokenExpiry")
+  );
 
   useEffect(() => {
+    if (accessToken) return;
+
     axios
       .post("http://localhost:3000/callback", {
         code,
       })
       .then((res) => {
         window.history.pushState({}, null, "/");
-        setAccessToken(res.data.data.accessToken);
 
-        setRefreshToken(res.data.data.refreshToken);
+        localStorage.setItem("accessToken", res.data.data.accessToken);
 
-        setExpiresIn(res.data.data.expiresIn);
+        localStorage.setItem("refreshToken", res.data.data.refreshToken);
+
+        localStorage.setItem("accessTokenExpiry", res.data.data.expiresIn);
       })
       .catch(() => {
         window.location = "/login";
@@ -30,20 +39,20 @@ export default function () {
   useEffect(() => {
     if (!refreshToken || !expiresIn) return;
 
-    const timeOut = setTimeout(() => {
+    const timeOut = setInterval(() => {
       axios
         .post("http://localhost:3000/refresh", {
           refreshToken,
         })
         .then((res) => {
-          setAccessToken(res.data.data.accessToken);
+          localStorage.setItem("accessToken", res.data.data.accessToken);
 
-          setExpiresIn(res.data.data.expiresIn);
+          localStorage.setItem("accessTokenExpiry", res.data.data.expiresIn);
         })
         .catch(() => (window.location = "/"));
-    }, (expiresIn - 60) * 1000);
+    }, (expiresIn - 61) * 1000);
 
-    return () => clearTimeout(timeOut);
+    return () => clearInterval(timeOut);
   }, [refreshToken, expiresIn]);
 
   return accessToken;

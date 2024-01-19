@@ -45,7 +45,6 @@ exports.callback = (req, res) => {
 
 exports.refresh = (req, res) => {
   const { refreshToken } = req.body;
-  console.log("refreshing");
 
   if (!refreshToken) {
     return res

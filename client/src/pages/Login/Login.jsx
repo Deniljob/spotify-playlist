@@ -7,10 +7,9 @@ const URL =
 
 function Login() {
   useEffect(() => {
-    const accessTokenCookie = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("access_token="));
-    if (accessTokenCookie) window.location.href = "/";
+    if (localStorage.getItem("accessToken")) {
+      window.location = "/";
+    }
   }, []);
 
   return (
