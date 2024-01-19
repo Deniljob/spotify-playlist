@@ -3,7 +3,10 @@ import "./Dashboard.css";
 import SongCard from "../../components/SongCard";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
-import { PlayCircleIcon } from "@heroicons/react/24/solid";
+import {
+  PlayCircleIcon,
+  ArrowLeftEndOnRectangleIcon,
+} from "@heroicons/react/24/solid";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 
@@ -83,6 +86,9 @@ function Dashboard() {
 
   return (
     <>
+      <div className="logout" onClick={handleLogout}>
+        <ArrowLeftEndOnRectangleIcon />
+      </div>
       <div className="search-wrapper">
         <input
           type="text"
@@ -141,6 +147,14 @@ async function fetchAudio(link) {
   } catch (error) {
     console.log(error);
   }
+}
+
+function handleLogout() {
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
+  localStorage.removeItem("accessTokenExpiry");
+
+  window.location = "/";
 }
 
 export default Dashboard;

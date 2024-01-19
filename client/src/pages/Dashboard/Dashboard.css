@@ -79,3 +79,19 @@
 .rhap_additional-controls button {
   display: none !important;
 }
+
+.logout {
+  width: 40px;
+  height: 40px;
+  float: right;
+  margin-top: -40px;
+  margin-right: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+  padding: 5px;
+}
+
+.logout:hover {
+  background-color: #1ed760;
+  color: black;
+}
