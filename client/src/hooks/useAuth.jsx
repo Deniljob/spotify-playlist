@@ -19,7 +19,7 @@ export default function () {
     if (accessToken) return;
 
     axios
-      .post("http://localhost:3000/callback", {
+      .post("https://spotify-playlist-server.onrender.com/callback", {
         code,
       })
       .then((res) => {
@@ -41,7 +41,7 @@ export default function () {
 
     const timeOut = setInterval(() => {
       axios
-        .post("http://localhost:3000/refresh", {
+        .post("https://spotify-playlist-server.onrender.com/refresh", {
           refreshToken,
         })
         .then((res) => {

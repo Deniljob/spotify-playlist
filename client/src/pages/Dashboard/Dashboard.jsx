@@ -42,7 +42,7 @@ function Dashboard() {
       setLoading(true);
 
       const links = await axios.post(
-        `http://localhost:3000/api/playList`,
+        `https://spotify-playlist-server.onrender.com/api/playList`,
         {
           link: playListUrl,
         },
@@ -126,6 +126,7 @@ function Dashboard() {
       >
         <p>{songs.length > 0 ? songs[currentSong].songName : ""}</p>
         <AudioPlayer
+          autoPlayAfterSrcChange={songs[currentSong] === 0 ? false : true}
           onEnded={() => setCurrentSong((prev) => prev + 1)}
           src={songs.length > 0 ? songs[currentSong].audioLink : ""}
         />
@@ -137,7 +138,7 @@ function Dashboard() {
 async function fetchAudio(link) {
   try {
     const audio = await axios.post(
-      "http://localhost:3000/api/download-single-audio",
+      "https://spotify-playlist-server.onrender.com/api/download-single-audio",
       {
         youtubeLink: link,
       }
